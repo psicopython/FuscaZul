@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<title></title>
+	</head>
+	<body>
+		<div id="form">
+			<form action="/cadastro/" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+				<pre>
+<input type="text" name="nome" id=""  value="" placeholder="nome"/>
+
+<input type="number" name="tel" id="" value="" placeholder="telefone"/>
+
+<input type="date" name="nas" id=""  value="" />
+
+<input type="email" name="email" id="" value=""  placeholder="email"/>
+
+<input type="text" name="senha" id="" value="" placeholder="senha"/>
+
+<input type="file" name="imagem" id="" accept="image/*" />
+
+<input type="submit" name="" id="" value="enviar"  />
+				</pre>
+			</form>
+		</div>
+		
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<script src ="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<script>
+			var app = new vue ({
+				el: "#form",
+				delimiters: ['{[',']}'],
+				data: {
+					user: {
+						nome: "",
+						email: "",
+						senha: "",
+						nas: "",
+						tel: "",
+						imagem:"",
+					}
+				},
+				methods: {
+					cadastrar () {
+						axios.post('/cadastro/',{
+							user:this.user
+						})
+						.then(response => window.location.href="/")
+						.catch(error => alert(error))
+					}
+				}
+			})
+		</script>
+	</body>
+</html>
