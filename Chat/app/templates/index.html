@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Chat</title>
+		<style>
+			body,html{
+				display: flex;
+				height: 100%;
+				margin:0;
+				padding: 0;
+				word-wrap: break-word;
+			}
+			#main{
+				width: 100%;
+				height: 100%;
+			}
+			#form{
+				position: fixed;
+				bottom: 0px;
+				width: 100%;
+				background: gray;
+			}
+			#form form{
+				display: flex;
+				padding: 10px;
+				align-items: center;
+				text-align: center;
+				justify-content: space-evenly;
+				
+			}
+			#msg {
+				width: 100%;
+			}
+			#mens {
+				width: 320px;
+				margin: 5px 0px;
+				padding: 5px;
+				border-radius: 10px;
+				background: #198ad8;
+			}
+			#info {
+				display: none;
+			}
+			textarea, button{
+				border: .5px solid black;
+				padding: 5px;
+				border-radius: 10px;
+			}
+			textarea{
+				width: 80%;
+			}
+			button{
+				width: 15%;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="main">
+			<div id="info">
+				<input type="text" name="nome_loc" id="nome_loc" value="1">
+				<input type="text" name="nome_rec" id="nome_rec" value="2" />
+			</div>
+			<div id="msg">
+				<p id="mens">ola</p>
+			</div>
+			<div id="form">
+				<form>
+					<textarea name="mensagem" rows="3"
+						id="mensagem" placeholder="Mensagem" ></textarea>
+					<input type="file" name="img" id="img" value="" />
+					<button type="submit" id="input-btn">Enviar</button>
+				</form>
+			</div>
+		</div>
+		<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+		<script type="text/javascript" charset="utf-8">
+		$(document).ready(function(){
+			var socket = io();
+			$('form').submit(function(evn){
+				evn.preventDefault()
+			})
+			$('#input-btn').click(function(){
+				if($('#mensagem').val()){
+					socket.emit('message', {
+						data: {
+							msg: $('#mensagem').val(),
+							de: $('#nome_loc').val(),
+							para: $('#nome_rec').val(),
+							img: $('#img').val(),
+						}
+					});
+					$('#mensagem').val('')
+				}
+			});
+			socket.on('message',function(data){
+				$('#msg').append('<p id="mens">'+
+				data['data']['de']+'<br>'+
+				data['data']['para']+'<br>'+
+				data['data']['msg']+'<br>'+
+				'</p>'
+				)
+			})
+		});
+		</script>
+	</body>
+</html>

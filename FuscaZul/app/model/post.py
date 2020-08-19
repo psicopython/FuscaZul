@@ -35,7 +35,7 @@ class Post(db.Model):
 			"id": self.id,
 			"data": self.data,
 			"id_user": self.id_user,
-			"list_imagens":imgs,
+			"imagens":imgs,
 			"legenda": self.legenda,
 		}
 	

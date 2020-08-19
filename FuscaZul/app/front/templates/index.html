@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="" content="">
+		<title></title>
+		<style>
+			html,body{
+				font-family: Courier, Sans-Serif;
+
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			{% if posts %}
+				{% for post in posts %}
+					<hr>
+					
+					<p>
+						<h1>
+							{{post.legenda}}
+						</h1>
+						<sub>
+							{{post.data.day}}/{{post.data.month}}/{{post.data.year}}
+							as {{post.data.hour}}:{{post.data.minute}}
+						
+						</sub>
+					</p>
+					{% if post.imagens %}
+						{% for img in post.imagens %}
+							<img width="100%" src="data:;base64,{{img.imagem}}" alt="" />
+						{% endfor %}
+					{% endif %}
+				{% endfor %}
+			{% endif %}
+		</div>
+	</body>
+</html>
+<!--
+<!DOCTYPE html>
+<html>
+<body>
+
+	<h2>The XMLHttpRequest Object</h2>
+	
+	<p id="demo">Let AJAX change this text.</p>
+	
+	<button type="button" onclick="loadDoc()">Change Content</button>
+	
+	<script>
+	function loadDoc() {
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				document.getElementById("demo").innerHTML = this.responseText;
+			}
+		};
+		xhttp.open("GET", "ajax_info.txt", true);
+		xhttp.send();
+	}
+	</script>
+
+</body>
+</html>
+-->

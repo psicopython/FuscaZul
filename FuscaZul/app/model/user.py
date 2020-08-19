@@ -86,16 +86,3 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
 		model = User 
 	
 
-
-"""
-class UserImg(db.Model):
-	
-	__tablename__='userImg'
-	
-	id = db.Column(db.Integer,primary_key=True)
-	foto = db.Column(db.BLOB,nullable=False)
-	data = db.Column(db.Date,nullable=False)
-	id_post = db.Column(db.Integer,nullable=False)
-	id_user = db.Column(db.Integer,nullable=False)
-	
-"""

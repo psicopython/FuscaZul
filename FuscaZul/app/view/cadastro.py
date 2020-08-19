@@ -2,7 +2,7 @@
 from flask import (
 	session, current_app, redirect, 
 	render_template, jsonify,
-	request,
+	request, url_for,
 )
 
 from app.model.user import User
@@ -72,8 +72,8 @@ def cadastro():
 			
 			User.query.filter_by(id=new_user.id).update({'post_img':img_post.id})
 			current_app.db.session.commit()
-			print('///')
 		
-		return jsonify("ok")
+		session['user_id'] = new_user.id
+		return redirect('/')
 	else:
 		return render_template('cad.html')
