@@ -1,3 +1,6 @@
 # FuscaZul
-## Eu acho que é uma api...
-#### Por enquanto, não tenho muito oq dizer
+## É uma api!... e um chat
+### Eu ainda não sei bem oq é, mas é alguma coisa legal kkk
+
+O chat depende da api pra funfar,
+ pq necessita dos dados de usuário que a api possuí
