@@ -12,22 +12,22 @@ class Chat(db.Model):
 	__tablename__="chat"
 	
 	id = db.Column(db.Integer,primary_key=True)
-	id_user1 = db.Column(db.Integer,nullable=False)
-	id_user2 = db.Column(db.Integer,nullable=False)
+	user1 = db.Column(db.Integer,nullable=False)
+	user2 = db.Column(db.Integer,nullable=False)
 	
 	
 	
 	def get_conv(self):
 		return {
 			"id_conv": self.id,
-			"user_1": self.id_user1,
-			"user_2":self.id_user2,
+			"user_1": self.user1,
+			"user_2":self.user2,
 		}
 		
-	def __init__(self,id_user1,id_user2):
+	def __init__(self,user1,user2):
 		
-		self.id_user1 = id_user1
-		self.id_user2 = id_user2
+		self.user1 = user1
+		self.user2 = user2
 	
 
 
@@ -54,30 +54,25 @@ class Mensagem(db.Model):
 		return dec.decrypt(msg).decode('utf-8')
 	
 	
-	def get_conv(self):
-		imgMsg = ImgMsg.query.filter(
-			id_conv=self.id_con,
-			id_msg=self.id,
-		).all()
+	def get_msg(self):
 		
 		return {
 			"id_msg": self.id,
 			"id_conv": self.id_conv,
-			"user_env": self.id_env,
-			"user_rec":self.id_rec,
-			"mensagem":self.decrypt(self.mensagem),
-			"data":self.data,
-			"imgs": [img.get_imgMsg() for img in ImgMsg] if imgMsg else None,
+			"id_user1": self.id_env,
+			"id_user2":self.id_rec,
+			"msg":self.decrypt(self.mensagem),
+			
 		}
 	
 	
 	def _get_data(self):
 		return datetime.now()
 		
-	def __init__(self,id_conv,id_user1,id_user2):
+	def __init__(self,id_conv,id_user1,id_user2, mensagem):
 		
-		self.id_user1 = id_user1
-		self.id_user2 = id_user2
+		self.id_env = id_user1
+		self.id_rec = id_user2
 		self.id_conv = id_conv
 		self.data = self._get_data()
 		self.mensagem = self.encrypt(mensagem)

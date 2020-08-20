@@ -1,9 +1,8 @@
-from flask import Flask, session
+from flask import Flask
 
 from .config import config
 from .model  import config_db
 from .view   import config_vw
-from .websocket   import config_sk
 
 
 def create():
@@ -13,7 +12,6 @@ def create():
 	config(app)
 	config_db(app)
 	config_vw(app)
-	config_sk(app)
 
 	
 	return app

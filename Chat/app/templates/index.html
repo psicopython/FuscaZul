@@ -8,22 +8,22 @@
 			body,html{
 				display: flex;
 				height: 100%;
+				width: 99%;
 				margin:0;
 				padding: 0;
 				word-wrap: break-word;
 			}
 			#main{
 				width: 100%;
-				height: 100%;
+				height: 80%;
 			}
 			#form{
-				position: fixed;
+				position: relative;
 				bottom: 0px;
-				width: 100%;
+				width: 102%;
 				background: gray;
 			}
 			#form form{
-				display: flex;
 				padding: 10px;
 				align-items: center;
 				text-align: center;
@@ -33,15 +33,31 @@
 			#msg {
 				width: 100%;
 			}
-			#mens {
-				width: 320px;
+			#mensL {
+				width: 80%;
 				margin: 5px 0px;
 				padding: 5px;
 				border-radius: 10px;
 				background: #198ad8;
+				text-align: left;
+				
 			}
+			
+			#mensR { 
+				width: 80%;
+				margin: 5px 0px;
+				margin-left: 19%;
+				padding: 5px;
+				border-radius: 10px;
+				background: #37f379;
+				text-align: right;
+				
+			}
+			
 			#info {
 				display: none;
+				position: absolute;
+				top: -200px;
 			}
 			textarea, button{
 				border: .5px solid black;
@@ -59,17 +75,28 @@
 	<body>
 		<div id="main">
 			<div id="info">
-				<input type="text" name="nome_loc" id="nome_loc" value="1">
-				<input type="text" name="nome_rec" id="nome_rec" value="2" />
+				<input type="text" id="user1_locId" value="{{user.id}}"><br />
+				<input type="text" id="user1_locNome" value="{{user.nome}}"><br />
+				<br />
+				<input type="text" id="user2_locId" value="{{user2.id}}"><br />
+				<input type="text" id="user2_locNome" value="{{user2.nome}}">
+	
 			</div>
 			<div id="msg">
-				<p id="mens">ola</p>
+				{% if msgs %}
+					{% for msg in msgs %}
+						{% if msg.get_msg().id_user1 == user.id %}
+						<p id="mensR">{{msg.get_msg().msg}}</p>
+						{% else %}
+						<p id="mensL">{{msg.get_msg().msg}}</p>
+						{% endif %}
+					{% endfor %}
+				{% endif %}
 			</div>
 			<div id="form">
 				<form>
 					<textarea name="mensagem" rows="3"
 						id="mensagem" placeholder="Mensagem" ></textarea>
-					<input type="file" name="img" id="img" value="" />
 					<button type="submit" id="input-btn">Enviar</button>
 				</form>
 			</div>
@@ -85,24 +112,22 @@
 			})
 			$('#input-btn').click(function(){
 				if($('#mensagem').val()){
-					socket.emit('message', {
-						data: {
+					socket.emit('message', 
+						{
 							msg: $('#mensagem').val(),
-							de: $('#nome_loc').val(),
-							para: $('#nome_rec').val(),
-							img: $('#img').val(),
+							id_user1: $('#user1_locId').val(),
+							id_user2: $('#user2_locId').val(),
 						}
-					});
+					);
 					$('#mensagem').val('')
 				}
 			});
 			socket.on('message',function(data){
-				$('#msg').append('<p id="mens">'+
-				data['data']['de']+'<br>'+
-				data['data']['para']+'<br>'+
-				data['data']['msg']+'<br>'+
-				'</p>'
-				)
+				if(data['id_user1'] == $('#user1_locId').val() ){
+					$('#msg').append(`<div id="mensR"><pre><b>${$('#user1_locNome').val()}</b><br>${data["msg"]}</pre></div>`)
+				}else{
+					$('#msg').append(`<div id="mensL"><pre><b>${$('#user2_locNome').val()}</b><br>${data["msg"]}</pre></div>`)
+				}
 			})
 		});
 		</script>

@@ -2,28 +2,27 @@
 from flask import Blueprint
 
 
-#from .index import index
 from .post import post
 
-from .post import post
+from .index import index
 
-from .login import login, logout
 from .login import login, logout
 from .cadastro import cadastro
 
+
+from .api import apiUser
 
 bp = Blueprint(
 	'webui',__name__
 )
 
 
-"""
 bp.add_url_rule(
 	'/',
 	methods=["GET"],
 	view_func=index,
 	endpoint='index'
-)"""
+)
 
 bp.add_url_rule(
 	'/post/',
@@ -63,6 +62,14 @@ bp.add_url_rule(
 	methods=["GET","POST"],
 	view_func=post,
 	endpoint='post'
+)
+
+
+bp.add_url_rule(
+	'/api/user/<int:id>/',
+	methods=["GET","POST"],
+	view_func=apiUser,
+	endpoint='apiUser'
 )
 
 

@@ -74,7 +74,11 @@ class Mensagem(db.Model):
 	def _get_data(self):
 		return datetime.now()
 		
-	def __init__(self,id_conv,id_user1,id_user2):
+	def __init__(
+			self,id_conv,
+			id_user1,id_user2,
+			mensagem,
+		):
 		
 		self.id_user1 = id_user1
 		self.id_user2 = id_user2
