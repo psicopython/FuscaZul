@@ -34,7 +34,6 @@ def cadastro():
 		if request.form:
 			
 			img = request.files.get('imagem')
-			print(img)
 			nas = request.form['nas']
 			tel = request.form['tel']
 			nome = request.form['nome']

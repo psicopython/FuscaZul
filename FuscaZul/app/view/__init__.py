@@ -2,7 +2,7 @@
 from flask import Blueprint
 
 
-from .index import index
+#from .index import index
 from .post import post
 
 from .post import post
@@ -17,13 +17,13 @@ bp = Blueprint(
 )
 
 
-
+"""
 bp.add_url_rule(
 	'/',
 	methods=["GET"],
 	view_func=index,
 	endpoint='index'
-)
+)"""
 
 bp.add_url_rule(
 	'/post/',

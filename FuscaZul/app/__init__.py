@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, session
 
 from .config import config
 from .model  import config_db
@@ -14,5 +14,6 @@ def create():
 	config_db(app)
 	config_vw(app)
 	config_sk(app)
+
 	
 	return app
