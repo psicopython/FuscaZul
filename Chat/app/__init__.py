@@ -19,6 +19,7 @@ from app.socket import config_sk
 
 def create():
 	app = Flask(__name__.split('.')[0])
+	
 	app.config['SECRET_KEY'] = 'FuSKaZul'
 	app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 	app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -32,13 +33,15 @@ def create():
 	
 	@app.route('/chat/<int:id>/<int:id2>/')
 	def index(id,id2):
+		msgs = None
+		
 		url = 'http://localhost:5000/api/user/'
 		user = requests.get(url+str(id)).json()
 		user2 = requests.get(url+str(id2)).json()
-		
 		conv = Chat.query.filter_by(user1=user['id'],user2=user2['id']).first()
-		msgs = Mensagem.query.filter_by(id_conv=conv.id).order_by(current_app.db.desc('id')).limit(15).all()
-		
+		if conv:
+			msgs = Mensagem.query.filter_by(id_conv=conv.id).order_by(current_app.db.desc('id')).limit(15).all()
+			msgs = msgs[::-1]
 		return render_template('index.html',user=user,user2=user2,msgs=msgs)
 	
 	
@@ -84,17 +87,14 @@ def create():
 			)
 			current_app.db.session.add_all([msg1,msg2])
 			current_app.db.session.commit()
-			return msg1.id
+			return msg1
 	
 	
 	@app.sk.on('message')
 	def save_message(data):
 		if data:
-			print(data)
-			msg_id = chat(data)
-			msg = Mensagem.query.filter_by(id=msg_id).first()
+			msg = chat(data)
 			msg = msg.get_msg()
-			print(msg)
 			app.sk.emit('message',msg)
 	
 	

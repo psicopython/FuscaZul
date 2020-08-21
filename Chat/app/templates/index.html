@@ -8,10 +8,11 @@
 			body,html{
 				display: flex;
 				height: 100%;
-				width: 99%;
+				width: 100%;
 				margin:0;
-				padding: 0;
+				padding: 0%;
 				word-wrap: break-word;
+				font-family: Arial, Sans-Serif;
 			}
 			#main{
 				width: 100%;
@@ -20,8 +21,8 @@
 			#form{
 				position: relative;
 				bottom: 0px;
-				width: 102%;
-				background: gray;
+				width: 100%;
+				background: #5167d3;
 			}
 			#form form{
 				padding: 10px;
@@ -31,12 +32,13 @@
 				
 			}
 			#msg {
-				width: 100%;
+				width: 96%;
+				padding: 2%;
 			}
 			#mensL {
-				width: 80%;
+				width: 70%;
 				margin: 5px 0px;
-				padding: 5px;
+				padding: 5px 2px;
 				border-radius: 10px;
 				background: #198ad8;
 				text-align: left;
@@ -44,12 +46,12 @@
 			}
 			
 			#mensR { 
-				width: 80%;
+				width: 70%;
 				margin: 5px 0px;
-				margin-left: 19%;
-				padding: 5px;
+				margin-left: 30%;
+				padding: 5px 2px;
 				border-radius: 10px;
-				background: #37f379;
+				background: #63d0ec;
 				text-align: right;
 				
 			}
@@ -59,6 +61,8 @@
 				position: absolute;
 				top: -200px;
 			}
+			
+			
 			textarea, button{
 				border: .5px solid black;
 				padding: 5px;
@@ -70,25 +74,44 @@
 			button{
 				width: 15%;
 			}
+			img {
+				border-radius: 10px;
+				width: 24px;
+				height: 24px;
+			}
 		</style>
 	</head>
 	<body>
 		<div id="main">
 			<div id="info">
-				<input type="text" id="user1_locId" value="{{user.id}}"><br />
+				<input type="text" id="user1_locId"   value="{{user.id}}"><br />
 				<input type="text" id="user1_locNome" value="{{user.nome}}"><br />
+				<input type="text" id="user1_locImg"  value="{{user.img_post.imagens[0].imagem}}"><br />
 				<br />
-				<input type="text" id="user2_locId" value="{{user2.id}}"><br />
+				<input type="text" id="user2_locId"   value="{{user2.id}}"><br />
 				<input type="text" id="user2_locNome" value="{{user2.nome}}">
+				<input type="text" id="user2_locImg"  value="{{user2.img_post.imagens[0].imagem}}"><br />
+	
 	
 			</div>
 			<div id="msg">
 				{% if msgs %}
 					{% for msg in msgs %}
 						{% if msg.get_msg().id_user1 == user.id %}
-						<p id="mensR">{{msg.get_msg().msg}}</p>
+						<div id="mensR">
+							{{user.nome}}
+							{% if user.img_post %}
+								<img src="data:;base64,{{user.img_post.imagens[0].imagem}}">
+							{% endif %}
+						<pre>{{msg.get_msg().msg}}</pre></div>
 						{% else %}
-						<p id="mensL">{{msg.get_msg().msg}}</p>
+						<div id="mensL">
+							{% if user2.img_post %}
+								<img src="data:;base64,{{user2.img_post.imagens[0].imagem}}">
+							{% endif %}
+							{{user2.nome}}
+							<pre>{{msg.get_msg().msg}}</pre>
+						</div>
 						{% endif %}
 					{% endfor %}
 				{% endif %}
@@ -110,6 +133,7 @@
 			$('form').submit(function(evn){
 				evn.preventDefault()
 			})
+			
 			$('#input-btn').click(function(){
 				if($('#mensagem').val()){
 					socket.emit('message', 
@@ -124,12 +148,14 @@
 			});
 			socket.on('message',function(data){
 				if(data['id_user1'] == $('#user1_locId').val() ){
-					$('#msg').append(`<div id="mensR"><pre><b>${$('#user1_locNome').val()}</b><br>${data["msg"]}</pre></div>`)
+					$('#msg').append(`<div id="mensR">${$('#user1_locNome').val()}<img src="data:;base64,${$('#user1_locImg').val()}"><pre>${data["msg"]}</pre></div>`)
 				}else{
-					$('#msg').append(`<div id="mensL"><pre><b>${$('#user2_locNome').val()}</b><br>${data["msg"]}</pre></div>`)
+					$('#msg').append(`<div id="mensL"><img src="data:;base64,${$('#user2_locImg').val()}">${$('#user2_locNome').val()}<pre>${data["msg"]}</pre></div>`)
 				}
 			})
+			
 		});
 		</script>
 	</body>
 </html>
+

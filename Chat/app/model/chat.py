@@ -62,6 +62,7 @@ class Mensagem(db.Model):
 			"id_user1": self.id_env,
 			"id_user2":self.id_rec,
 			"msg":self.decrypt(self.mensagem),
+			"data":str(self.data)[:19],
 			
 		}
 	
